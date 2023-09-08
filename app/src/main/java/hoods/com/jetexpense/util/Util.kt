@@ -1,6 +1,7 @@
 package hoods.com.jetexpense.util
 
 import androidx.compose.ui.graphics.Color
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -60,18 +61,27 @@ fun getColor(amount: Float, colors: List<Color>): Color {
         amount < 500 -> {
             colors[0]
         }
+
         amount < 1000 -> {
             colors[1]
         }
+
         amount < 5000 -> {
             colors[2]
         }
+
         amount < 10000 -> {
             colors[3]
         }
+
         else -> {
             colors[4]
         }
     }
 }
 
+fun formatAmount(amoount: Float): String {
+    return AmountDecimalFormat.format(amoount)
+}
+
+private val AmountDecimalFormat = DecimalFormat("#,###.##")
