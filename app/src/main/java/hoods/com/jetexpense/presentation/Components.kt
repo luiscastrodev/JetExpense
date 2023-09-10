@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import hoods.com.jetexpense.presentation.home.HomeUiState
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
 import hoods.com.jetexpense.util.Util
+import hoods.com.jetexpense.util.getColor
 
 @Composable
 fun AccountCard(
@@ -132,6 +133,31 @@ fun IncomeCard(
     onClickSeeAll: () -> Unit,
     onIncomeClick: (id: Int) -> Unit
 ) {
+    OverViewCard(
+        title = "Income",
+        amount = account.totalIncome,
+        onClickSeeAll = onClickSeeAll,
+        values = { it.incomeAmount.toFloat() },
+        colors = { getColor(it.incomeAmount.toFloat(), Util.incomeColor) },
+        data = account.income
+    ) {
+
+    }
+}
+
+@Composable
+fun IncomeRow(
+    modifier: Modifier = Modifier,
+    name: String,
+    description: String,
+    amount: Float,
+    color: Color
+) {
+
+}
+
+@Composable
+private fun BaseRow() {
 
 }
 
