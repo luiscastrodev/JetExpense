@@ -1,10 +1,14 @@
 package hoods.com.jetexpense.presentation
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -15,14 +19,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import hoods.com.jetexpense.presentation.home.HomeUiState
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
 import hoods.com.jetexpense.util.Util
 
@@ -112,6 +121,89 @@ private fun PreviewAccountCard() {
                 cardTitle = "TOTAL INCOME",
                 amount = "150",
                 cardIcon = Icons.Default.ArrowCircleUp
+            )
+        }
+    }
+}
+
+@Composable
+fun IncomeCard(
+    account: HomeUiState,
+    onClickSeeAll: () -> Unit,
+    onIncomeClick: (id: Int) -> Unit
+) {
+
+}
+
+@Composable
+private fun <T> OverViewCard(
+    title: String,
+    amount: Float,
+    onClickSeeAll: () -> Unit,
+    values: (T) -> Float,
+    colors: (T) -> Color,
+    data: List<T>,
+    row: @Composable (T) -> Unit
+) {
+    Card {
+        Column {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(12.dp)
+            )
+            OverViewDivider(
+                data = data,
+                values = values,
+                colors = colors
+            )
+            Column(
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 4.dp)
+            ) {
+                data.takeLast(SHOWN_ITENS).forEach {
+                    row(it)
+                }
+
+                SeeAllButton(modifier = Modifier.clearAndSetSemantics {
+                    contentDescription = "All $title"
+                }, onClickSeeAll = onClickSeeAll)
+            }
+        }
+    }
+}
+
+const val SHOWN_ITENS = 3
+
+@Composable
+fun SeeAllButton(
+    modifier: Modifier = Modifier,
+    onClickSeeAll: () -> Unit
+) {
+    TextButton(
+        onClick = onClickSeeAll,
+        modifier = modifier
+            .height(44.dp)
+            .fillMaxWidth()
+    ) {
+        Text(text = "see all".uppercase())
+    }
+}
+
+@Composable
+fun <T> OverViewDivider(
+    data: List<T>,
+    values: (T) -> Float,
+    colors: (T) -> Color,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        data.forEach { item ->
+            Spacer(
+                modifier = Modifier
+                    .weight(values(item))
+                    .height(1.dp)
+                    .background(colors(item))
             )
         }
     }
