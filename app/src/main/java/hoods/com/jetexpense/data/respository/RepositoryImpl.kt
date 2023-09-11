@@ -13,7 +13,7 @@ import javax.inject.Inject
 class RepositoryImpl @Inject constructor(
     private val incomeDao: IncomeDao,
     private val expenseDao: ExpenseDao,
-    @IoDispatcher private val dispacher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : Repository {
 
     override val income: Flow<List<Income>>
@@ -22,12 +22,12 @@ class RepositoryImpl @Inject constructor(
     override val expense: Flow<List<Expense>>
         get() = expenseDao.getAllExpense()
 
-    override suspend fun insertIncome(income: Income) = withContext(dispacher)
+    override suspend fun insertIncome(income: Income) = withContext(dispatcher)
     {
         incomeDao.insertIncome(income)
     }
 
-    override suspend fun insertExpense(expense: Expense) = withContext(dispacher) {
+    override suspend fun insertExpense(expense: Expense) = withContext(dispatcher) {
         expenseDao.insertExpense(expense)
     }
 
@@ -35,19 +35,19 @@ class RepositoryImpl @Inject constructor(
 
     override fun getExpenseById(id: Int): Flow<Expense> = expenseDao.getExpenseById(id)
 
-    override suspend fun updateIncome(income: Income) = withContext(dispacher) {
+    override suspend fun updateIncome(income: Income) = withContext(dispatcher) {
         incomeDao.updateIncome(income)
     }
 
-    override suspend fun updateExpense(expense: Expense) = withContext(dispacher) {
+    override suspend fun updateExpense(expense: Expense) = withContext(dispatcher) {
         expenseDao.updateExpense(expense)
     }
 
-    override suspend fun deleteIncome(id: Int): Int = withContext(dispacher) {
+    override suspend fun deleteIncome(id: Int): Int = withContext(dispatcher) {
         incomeDao.deleteIncome(id)
     }
 
-    override suspend fun deleteExpense(id: Int): Int = withContext(dispacher) {
+    override suspend fun deleteExpense(id: Int): Int = withContext(dispatcher) {
         expenseDao.deleteExpense(id)
     }
 }

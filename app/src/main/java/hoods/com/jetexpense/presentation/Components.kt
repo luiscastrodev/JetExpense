@@ -2,6 +2,7 @@ package hoods.com.jetexpense.presentation
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,10 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowCircleUp
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,13 +32,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toUpperCase
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import hoods.com.jetexpense.data.local.models.Expense
+import hoods.com.jetexpense.data.local.models.Income
 import hoods.com.jetexpense.presentation.home.HomeUiState
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
 import hoods.com.jetexpense.util.Util
+import hoods.com.jetexpense.util.formatAmount
 import hoods.com.jetexpense.util.getColor
+import java.util.Date
 
 @Composable
 fun AccountCard(
@@ -106,27 +114,6 @@ private fun AccountIconItem(
 
 }
 
-@Preview(
-    name = "Light mode",
-    showBackground = true,
-)
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true, name = "Dark Mode"
-)
-@Composable
-private fun PreviewAccountCard() {
-    JetExpenseTheme {
-        Surface {
-            AccountCard(
-                cardTitle = "TOTAL INCOME",
-                amount = "150",
-                cardIcon = Icons.Default.ArrowCircleUp
-            )
-        }
-    }
-}
-
 @Composable
 fun IncomeCard(
     account: HomeUiState,
@@ -140,9 +127,61 @@ fun IncomeCard(
         values = { it.incomeAmount.toFloat() },
         colors = { getColor(it.incomeAmount.toFloat(), Util.incomeColor) },
         data = account.income
-    ) {
-
+    ) { income ->
+        IncomeRow(
+            name = income.title,
+            description = income.description,
+            amount = income.incomeAmount.toFloat(),
+            color = getColor(income.incomeAmount.toFloat(), Util.incomeColor),
+            modifier = Modifier.clickable {
+                onIncomeClick.invoke(income.id)
+            }
+        )
     }
+}
+
+@Composable
+fun ExpenseCard(
+    account: HomeUiState,
+    onClickSeeAll: () -> Unit,
+    onExpenseClick: (id: Int) -> Unit
+) {
+    OverViewCard(
+        title = "Expense",
+        amount = account.totalExpense,
+        onClickSeeAll = onClickSeeAll,
+        values = { it.expenseAmount.toFloat() },
+        colors = { getColor(it.expenseAmount.toFloat(), Util.expenseColor) },
+        data = account.expense
+    ) { expense ->
+        ExpenseRow(
+            name = expense.title,
+            description = expense.description,
+            amount = expense.expenseAmount.toFloat(),
+            color = getColor(expense.expenseAmount.toFloat(), Util.incomeColor),
+            modifier = Modifier.clickable {
+                onExpenseClick.invoke(expense.id)
+            }
+        )
+    }
+}
+
+@Composable
+fun ExpenseRow(
+    modifier: Modifier = Modifier,
+    name: String,
+    description: String,
+    amount: Float,
+    color: Color
+) {
+    BaseRow(
+        color = color,
+        title = name,
+        subtitle = description,
+        amount = amount,
+        negative = true,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -153,12 +192,93 @@ fun IncomeRow(
     amount: Float,
     color: Color
 ) {
-
+    BaseRow(
+        color = color,
+        title = name,
+        subtitle = description,
+        amount = amount,
+        negative = false,
+        modifier = modifier
+    )
 }
 
 @Composable
-private fun BaseRow() {
+private fun BaseRow(
+    modifier: Modifier = Modifier,
+    color: Color,
+    title: String,
+    subtitle: String,
+    amount: Float,
+    negative: Boolean
+) {
+    val dollarSign = if (negative) "-R$" else "R$"
+    val formattedAmount = formatAmount(amount.toDouble())
 
+    Row(
+        modifier = modifier.height(69.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val typography = MaterialTheme.typography
+
+        AccountIndicator(color, Modifier)
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Text(
+                text = subtitle,
+                style = typography.bodySmall
+            )
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = dollarSign,
+                style = typography.titleMedium,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+            Text(
+                text = formattedAmount,
+                style = typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Icon(
+            imageVector = Icons.Filled.ChevronRight,
+            contentDescription = null,
+            modifier = Modifier
+                .padding(end = 12.dp)
+                .size(24.dp)
+        )
+    }
+    JetExpenseDivider()
+}
+
+@Composable
+fun JetExpenseDivider(modifier: Modifier = Modifier) {
+    Divider(
+        color = MaterialTheme.colorScheme.background,
+        modifier = modifier,
+        thickness = 2.dp
+    )
+}
+
+@Composable
+private fun AccountIndicator(color: Color, modifier: Modifier) {
+    Spacer(
+        modifier = modifier
+            .size(4.dp, 36.dp)
+            .background(color)
+    )
 }
 
 @Composable
@@ -230,6 +350,53 @@ fun <T> OverViewDivider(
                     .weight(values(item))
                     .height(1.dp)
                     .background(colors(item))
+            )
+        }
+    }
+}
+
+
+@Preview(
+    name = "Light mode",
+    showBackground = true,
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true, name = "Dark Mode"
+)
+@Composable
+private fun PreviewAccountCard() {
+
+    JetExpenseTheme {
+        Surface {
+            IncomeCard(
+                account = HomeUiState(
+                    income = listOf(
+                        Income(
+                            id = 8586,
+                            title = "nostra",
+                            description = "adhuc",
+                            incomeAmount = 22.23,
+                            entryDate = "omnesque",
+                            date = Date()
+                        )
+                    ),
+                    expense = listOf(
+                        Expense(
+                            id = 7303,
+                            title = "cetero",
+                            description = "tellus",
+                            expenseAmount = 26.27,
+                            category = "montes",
+                            entryDate = "hac",
+                            date = Date()
+                        )
+                    ),
+                    totalExpense = 16.17f,
+                    totalIncome = 18.19f
+                ),
+                onClickSeeAll = { },
+                onIncomeClick = { id -> }
             )
         }
     }

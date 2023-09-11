@@ -83,5 +83,9 @@ fun getColor(amount: Float, colors: List<Color>): Color {
 fun formatAmount(amoount: Float): String {
     return AmountDecimalFormat.format(amoount)
 }
+fun formatAmount(amount: Double):String{
+    val df = DecimalFormat("###,###.00")
+    return df.format(amount)
+}
 
 private val AmountDecimalFormat = DecimalFormat("#,###.##")

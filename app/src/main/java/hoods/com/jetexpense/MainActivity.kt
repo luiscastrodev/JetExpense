@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import hoods.com.jetexpense.presentation.home.HomeScreen
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,22 +25,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("PWA")
                 }
             }
         }
     }
-}
-
-@Composable
-fun Greeting(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
 }
 
 @Preview(
@@ -55,7 +44,7 @@ fun Greeting(
 private fun MainThemePreview() {
     JetExpenseTheme {
         Surface {
-            Greeting(name = "Hello Android")
+
         }
     }
 }

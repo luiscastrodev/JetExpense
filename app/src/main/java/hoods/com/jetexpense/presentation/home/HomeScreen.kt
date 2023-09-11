@@ -19,13 +19,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hoods.com.jetexpense.presentation.AccountCard
+import hoods.com.jetexpense.presentation.ExpenseCard
+import hoods.com.jetexpense.presentation.IncomeCard
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
 import hoods.com.jetexpense.util.formatAmount
 
 @Composable
 fun HomeScreen(
     state: HomeUiState,
-    modifier: Modifier
+    modifier: Modifier,
+    onIncomeclick: (Int) -> Unit,
+    onClickSeeAllIncome: () -> Unit,
+    onExpenseclick: (Int) -> Unit,
+    onClickSeeAllExpense: () -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         item {
@@ -70,6 +76,19 @@ fun HomeScreen(
                     )
                 }
             }
+            Spacer(modifier = Modifier.size(12.dp))
+        }
+        item {
+            IncomeCard(account = state,
+                onClickSeeAll = { onClickSeeAllIncome() },
+                onIncomeClick = { onIncomeclick.invoke(it) }
+            )
+            Spacer(modifier = Modifier.size(12.dp))
+        }
+        item {
+            ExpenseCard(account = state,
+                onExpenseClick = { onExpenseclick(it) },
+                onClickSeeAll = { onClickSeeAllExpense() })
         }
     }
 }
@@ -91,7 +110,11 @@ private fun HomeScreenPrev() {
                 state = HomeUiState(
                     totalExpense = 10f,
                     totalIncome = 23f
-                ), modifier = Modifier.fillMaxWidth()
+                ), modifier = Modifier.fillMaxWidth(),
+                {},
+                {},
+                {},
+                {}
             )
         }
     }
