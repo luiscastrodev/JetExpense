@@ -12,19 +12,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 import hoods.com.jetexpense.presentation.home.HomeScreen
+import hoods.com.jetexpense.presentation.home.HomeViewModel
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             JetExpenseTheme {
+                val homeViewModel: HomeViewModel = viewModel()
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    HomeScreen(
+                        state = homeViewModel.homeUiState,
+                        modifier = Modifier,
+                        onIncomeclick = {},
+                        onClickSeeAllIncome = { },
+                        onInsertExpense = homeViewModel::insertExpense,
+                        onClickSeeAllExpense = {} ,
+                        onInsertIncome = homeViewModel::insertIncome,
+                        onExpenseclick = {}
+                    )
                 }
             }
         }

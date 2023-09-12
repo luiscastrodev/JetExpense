@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import hoods.com.jetexpense.data.local.models.Expense
 import hoods.com.jetexpense.data.local.models.Income
 import hoods.com.jetexpense.data.respository.Repository
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
