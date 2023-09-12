@@ -158,7 +158,7 @@ fun ExpenseCard(
             name = expense.title,
             description = expense.description,
             amount = expense.expenseAmount.toFloat(),
-            color = getColor(expense.expenseAmount.toFloat(), Util.incomeColor),
+            color = getColor(expense.expenseAmount.toFloat(), Util.expenseColor),
             modifier = Modifier.clickable {
                 onExpenseClick.invoke(expense.id)
             }
