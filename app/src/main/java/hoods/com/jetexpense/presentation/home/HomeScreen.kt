@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import hoods.com.jetexpense.presentation.AccountCard
-import hoods.com.jetexpense.presentation.ExpenseCard
-import hoods.com.jetexpense.presentation.IncomeCard
+import hoods.com.jetexpense.presentation.components.AccountCard
+import hoods.com.jetexpense.presentation.components.ExpenseCard
+import hoods.com.jetexpense.presentation.components.IncomeCard
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
 import hoods.com.jetexpense.util.formatAmount
 
