@@ -14,9 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.AndroidEntryPoint
+import hoods.com.jetexpense.data.local.models.Income
 import hoods.com.jetexpense.presentation.home.HomeScreen
 import hoods.com.jetexpense.presentation.home.HomeViewModel
+import hoods.com.jetexpense.presentation.income.IncomeScreen
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
+import java.util.Date
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,7 +38,7 @@ class MainActivity : ComponentActivity() {
                         state = homeViewModel.homeUiState,
                         modifier = Modifier,
                         onIncomeclick = {},
-                        onClickSeeAllIncome = { },
+                        onClickSeeAllIncome = {},
                         onInsertExpense = homeViewModel::insertExpense,
                         onClickSeeAllExpense = {} ,
                         onInsertIncome = homeViewModel::insertIncome,
