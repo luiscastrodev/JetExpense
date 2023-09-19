@@ -26,7 +26,7 @@ class ExpenseViewModel @Inject constructor(
     fun getAllExpense() = viewModelScope.launch {
         respository.expense.collect {
             expenseState = expenseState.copy(
-                expense = it
+                expenses = it
             )
         }
     }
@@ -36,9 +36,8 @@ class ExpenseViewModel @Inject constructor(
             respository.deleteExpense(id)
         }
     }
-
 }
 
 data class ExpenseState(
-    val expense: List<Expense> = emptyList()
+    val expenses: List<Expense> = emptyList()
 )
