@@ -210,7 +210,7 @@ private fun BaseRow(
     amount: Float,
     negative: Boolean
 ) {
-    val dollarSign = if (negative) "-R$" else "R$"
+    val dollarSign = if (negative) "-R$ " else "R$ "
     val formattedAmount = formatAmount(amount.toDouble())
 
     Row(

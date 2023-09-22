@@ -2,6 +2,7 @@ package hoods.com.jetexpense.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,9 +19,9 @@ import hoods.com.jetexpense.presentation.income.IncomeViewModel
 fun JetExpenseNavigation(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    homeViewModel: HomeViewModel,
-    incomeViewModel: IncomeViewModel,
-    expenseViewModel: ExpenseViewModel
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    incomeViewModel: IncomeViewModel = hiltViewModel(),
+    expenseViewModel: ExpenseViewModel = hiltViewModel()
 ) {
 
     NavHost(navController = navHostController, startDestination = HomeDestination.routePath) {
@@ -29,7 +30,7 @@ fun JetExpenseNavigation(
         ) {
             HomeScreen(
                 state = homeViewModel.homeUiState,
-                modifier = Modifier,
+                modifier = modifier,
                 onIncomeclick = {},
                 onClickSeeAllIncome = {
                     navHostController.navigateToSingleTop(IncomeDestination.routePath)
@@ -44,6 +45,7 @@ fun JetExpenseNavigation(
         }
         composable(route = ExpenseDestination.routePath) {
             ExpenseScreen(
+                modifier = modifier,
                 expenses = expenseViewModel.expenseState.expenses,
                 onExpenseItemClick = { expenseId ->
 
@@ -55,6 +57,7 @@ fun JetExpenseNavigation(
         }
         composable(route = IncomeDestination.routePath) {
             IncomeScreen(
+                modifier = modifier,
                 incomes = incomeViewModel.incomeState.income,
                 onIncomeItemClick = { id ->
 
@@ -74,3 +77,6 @@ fun NavHostController.navigateToSingleTop(route: String) {
         restoreState = true
     }
 }
+
+
+

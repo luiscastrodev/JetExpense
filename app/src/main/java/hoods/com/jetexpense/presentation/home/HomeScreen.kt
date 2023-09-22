@@ -46,7 +46,7 @@ fun HomeScreen(
                     Text(text = "Your total balance:")
                     Spacer(modifier = Modifier.size(4.dp))
                     Text(
-                        text = "$" +
+                        text = "R$ " +
                                 formatAmount(balance),
                         fontWeight = FontWeight.Bold
                     )
@@ -56,7 +56,7 @@ fun HomeScreen(
                 ) {
                     AccountCard(
                         cardTitle = "Total Income",
-                        amount = "+$" + formatAmount(state.totalIncome),
+                        amount = "R$ " + formatAmount(state.totalIncome),
                         cardIcon = Icons.Default.ArrowDownward,
                         modifier = Modifier
                             .weight(1f)
@@ -69,7 +69,7 @@ fun HomeScreen(
 
                     AccountCard(
                         cardTitle = "Total Expense",
-                        amount = "-$" + formatAmount(state.totalExpense),
+                        amount = "-R$ " + formatAmount(state.totalExpense),
                         cardIcon = Icons.Default.ArrowUpward,
                         modifier = Modifier
                             .weight(1f)

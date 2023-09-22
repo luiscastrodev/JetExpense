@@ -1,6 +1,8 @@
 package hoods.com.jetexpense.util
 
 import androidx.compose.ui.graphics.Color
+import hoods.com.jetexpense.data.local.models.Expense
+import hoods.com.jetexpense.data.local.models.Income
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -89,3 +91,61 @@ fun formatAmount(amount: Double):String{
 }
 
 private val AmountDecimalFormat = DecimalFormat("#,###.##")
+
+
+
+val listIncome = listOf<Income>(
+    Income(
+        id = 4012,
+        title = "Roupas",
+        description = "Loja Ike",
+        incomeAmount = 2000.3,
+        entryDate = "vulputate",
+        date = Date()
+    ),
+    Income(
+        id = 6893,
+        title = "Oculos",
+        description = "Otica 1",
+        incomeAmount = 18.19,
+        entryDate = "vehicula",
+        date =Date()
+    ),
+    Income(
+        id = 68923,
+        title = "Notebook",
+        description = "DELL",
+        incomeAmount = 23.2,
+        entryDate = "vehicula",
+        date =Date()
+    )
+)
+val listExpense = listOf<Expense>(
+    Expense(
+        id = 3062,
+        title = "Medico",
+        description = "Clinica DT",
+        expenseAmount = 22.3,
+        category = "ea",
+        entryDate = "pharetra",
+        date = Date()
+    ),
+    Expense(
+        id = 30622,
+        title = "Aluguel",
+        description = "Despesas fixas",
+        expenseAmount = 342.3,
+        category = "ea",
+        entryDate = "pharetra",
+        date = Date()
+    ),
+    Expense(
+        id = 303622,
+        title = "Convenio",
+        description = "Amil",
+        expenseAmount = 2.43,
+        category = "ea",
+        entryDate = "pharetra",
+        date = Date()
+    )
+)

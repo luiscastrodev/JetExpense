@@ -15,11 +15,13 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import hoods.com.jetexpense.presentation.expense.ExpenseViewModel
 import hoods.com.jetexpense.presentation.home.HomeScreen
+import hoods.com.jetexpense.presentation.home.HomeUiState
 import hoods.com.jetexpense.presentation.home.HomeViewModel
 import hoods.com.jetexpense.presentation.income.IncomeViewModel
-import hoods.com.jetexpense.presentation.navigation.JetExpenseDestination
 import hoods.com.jetexpense.presentation.navigation.JetExpenseNavigation
 import hoods.com.jetexpense.ui.theme.JetExpenseTheme
+import hoods.com.jetexpense.util.listExpense
+import hoods.com.jetexpense.util.listIncome
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -27,10 +29,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetExpenseTheme {
-                val homeViewModel: HomeViewModel = viewModel()
-                val expenseViewModel: ExpenseViewModel = viewModel()
-                val incomeViewModel: IncomeViewModel = viewModel()
                 val navHostController = rememberNavController()
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -38,9 +38,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     JetExpenseNavigation(
                         modifier =  Modifier,
-                        expenseViewModel = expenseViewModel,
-                        incomeViewModel = incomeViewModel,
-                        homeViewModel = homeViewModel,
                         navHostController = navHostController
                     )
                 }
@@ -51,18 +48,32 @@ class MainActivity : ComponentActivity() {
 
 @Preview(
     name = "Light mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Preview(
+    name = "Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true, name = "Dark Mode"
+    showBackground = true,
 )
 @Composable
-private fun MainThemePreview() {
+private fun HomePreview() {
+
     JetExpenseTheme {
         Surface {
-
+            HomeScreen(state = HomeUiState(
+                income = listIncome,
+                expense = listExpense,
+                totalExpense = 12.13f,
+                totalIncome = 14.15f
+            ),
+                modifier = Modifier,
+                onIncomeclick = {},
+                onClickSeeAllIncome = {},
+                onExpenseclick = {},
+                onClickSeeAllExpense = {},
+                onInsertIncome = {},
+                onInsertExpense = {})
         }
     }
 }
