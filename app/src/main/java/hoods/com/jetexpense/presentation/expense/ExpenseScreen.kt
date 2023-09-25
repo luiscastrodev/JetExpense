@@ -31,7 +31,7 @@ fun ExpenseScreen(
         circleLabel = "Pay",
         onItemSwiped = { onExpenseItemDelete.invoke(it.id) },
         key = { it.id },
-        modifier = modifier
+        modifier = modifier,
     ) {
         ExpenseRow(
             name = it.title,
